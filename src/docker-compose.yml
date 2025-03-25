@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+  # Servicio para el servidor web
+  web:
+    image: php:apache
+    container_name: php-web
+    ports:
+      - "80:80"  # Mapeamos el puerto 80 para acceder a la aplicación
+    volumes:
+      - ./src:/var/www/html  # Volumen para montar el código fuente
+    networks:
+      - app-network
+
+  # Servicio para la base de datos MySQL
+  db:
+    image: mysql:5.7
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root  # Contraseña para el usuario root
+      MYSQL_DATABASE: testdb     # Base de datos por defecto
+    ports:
+      - "3306:3306"  # Mapeamos el puerto 3306 para poder conectarnos a MySQL
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
